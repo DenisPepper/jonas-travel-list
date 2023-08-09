@@ -1,18 +1,24 @@
 export const Stats = ({ list }) => {
   const totalCount = list.length;
-  const packedCount = list.reduce(
-    (acc, current) => (current.packed ? acc + 1 : acc),
-    0
+  const packedCount = list.filter((item) => item.packed).length;
+  const percent = Math.floor(
+    (totalCount > 0 ? packedCount / totalCount : 0) * 100
   );
-  const coef = packedCount / totalCount ? packedCount / totalCount : 0;
+
+  if (totalCount === 0) {
+    return (
+      <footer className='stats'>
+        <em>Start adding some items to your packing list 🚀</em>
+      </footer>
+    );
+  }
 
   return (
     <footer className='stats'>
-      {coef < 1 ? (
+      {percent < 100 ? (
         <em>
           👜 You have {totalCount} {totalCount > 1 ? 'items' : 'item'} on your
-          list, and you already packed {packedCount} (
-          {Math.floor(coef * 100, 2)} %)
+          list, and you already packed {packedCount} ({percent} %)
         </em>
       ) : (
         <em>You got everything! Ready to go ✈️</em>

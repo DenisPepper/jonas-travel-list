@@ -4,25 +4,32 @@ import { PackingList } from '../packing-list/packing-list';
 import { Stats } from '../stats/stats';
 import { useState } from 'react';
 
-const initialItems = [
-  { id: 1, description: 'Passports', quantity: 2, packed: false },
-  { id: 2, description: 'Socks', quantity: 12, packed: false },
-];
-
 export const App = () => {
-  const [list, setList] = useState(initialItems);
+  const [list, setList] = useState([]);
 
   const handleAddItem = (item) => setList((prev) => [...prev, item]);
 
   const handleDeleteItem = (id) =>
     setList((prev) => prev.filter((item) => item.id !== id));
 
+  const handleToggleItem = (id) => {
+    setList((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, packed: !item.packed } : item
+      )
+    );
+  };
+
   return (
     <div className='app'>
       <Logo />
       <Form handleAddItem={handleAddItem} />
-      <PackingList list={list} handleDeleteItem={handleDeleteItem} />
-      <Stats />
+      <PackingList
+        list={list}
+        handleDeleteItem={handleDeleteItem}
+        handleToggleItem={handleToggleItem}
+      />
+      <Stats list={list}/>
     </div>
   );
 };

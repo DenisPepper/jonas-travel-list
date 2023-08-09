@@ -9,13 +9,18 @@ const Sort = {
 const DEFAULT_SORT = Sort.input;
 
 export const PackingList = (props) => {
-  const { list, handleDeleteItem, handleToggleItem } = props;
+  const { list, handleDeleteItem, handleToggleItem, handleRemoveItems } = props;
   const [sort, setSort] = useState(DEFAULT_SORT);
 
-  let items = [];
-  sort === Sort.input && (items = list);
-  sort === Sort.description && (items = list.slice().sort((a, b) => a.description.localeCompare(b.description)));
-  sort === Sort.packed && (items = list.slice().sort((a, b) => a.packed && !b.packed ? 1 : -1));
+  let items = list;
+
+  sort === Sort.description &&
+    (items = list
+      .slice()
+      .sort((a, b) => a.description.localeCompare(b.description)));
+
+  sort === Sort.packed &&
+    (items = list.slice().sort((a, b) => Number(a.packed) - Number(b.packed)));
 
   return (
     <div className={'list'}>
@@ -35,6 +40,9 @@ export const PackingList = (props) => {
           <option value={Sort.description}>Sort by description</option>
           <option value={Sort.packed}>Sort by packed status</option>
         </select>
+        <button type='button' onClick={() => handleRemoveItems()}>
+          Clear list
+        </button>
       </div>
     </div>
   );

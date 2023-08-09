@@ -9,7 +9,10 @@ const DEFAULT_LIST = [];
 export const App = () => {
   const [list, setList] = useState(DEFAULT_LIST);
 
-  const handleRemoveItems = () => setList(DEFAULT_LIST);
+  const handleRemoveItems = () => {
+    const confirm = window.confirm('Do you want clear?');
+    confirm && setList(DEFAULT_LIST);
+  };
 
   const handleAddItem = (item) => setList((prev) => [...prev, item]);
 
@@ -34,7 +37,7 @@ export const App = () => {
         handleToggleItem={handleToggleItem}
         handleRemoveItems={handleRemoveItems}
       />
-      <Stats list={list}/>
+      <Stats list={list} />
     </div>
   );
 };
